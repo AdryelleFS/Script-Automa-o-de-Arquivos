@@ -64,7 +64,7 @@ Realiza Backup:
 Copiar todos os arquivos processados para uma pasta de backup.
 O nome da pasta deverá segue o padrão: Backup_2026-07-05_143000
 
-### Como executar: 
+## Como executar: 
 
 Abrir o PowerShell.
 
