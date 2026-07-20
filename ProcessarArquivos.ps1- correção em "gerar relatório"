@@ -27,11 +27,31 @@ foreach ($arquivo in $arquivos) {
     Write-Host "$($arquivo.Name) movido."
 }
 
-function CriaArquivo {
+function CriaArquivo{
     param (
         [string]$NomeArquivo,
         [string]$PastaDestino,   
-        [int]$Tamanho
+        [int]$Tamanho,
+        [string]$Extensao
     )
-    New-Item -Path "Relatorio_Processamento.csv" -ItemType File
+    Get-Command CriaArquiv**
+
+    $DataProcessamento = Get-Date -Format "dd/MM/yyyy HH:mm:ss"
+
+     $Conteudo = @"
+Nome do Arquivo: $NomeArquivo
+Extensão: $Extensao
+Data de Processamento: $DataProcessamento
+Tamanho: $Tamanho
+Pasta de Destino: $PastaDestino
+"@
+    $ArquivoRelatorio = Join-Path $PastaDestino "$NomeArquivo-Relatorio_Processamento"
+    Set-Content -Path $ArquivoRelatorio -Value $Conteudo
+    Write-Host "$NomeArquivo criado"
 }
+
+CriaArquivo `
+    -NomeArquivo "Relatorio_Processamento.csv" `
+    -Extensao ".csv" `
+    -PastaDestino "C:\Users\adryelle.sousa\Documents\EstudoGitHub\Relatorio" `
+    -Tamanho "150"
