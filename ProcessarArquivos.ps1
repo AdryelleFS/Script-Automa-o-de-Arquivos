@@ -27,8 +27,8 @@ $arquivos = Get-ChildItem -Path "C:\Users\adryelle.sousa\Downloads\*.csv"
 
 foreach ($arquivo in $arquivos) { 
 
-    Move-Item -Path $arquivo.FullName -Destination "C:\Users\adryelle.sousa\Processados"
-    Write-Host "$($arquivo.Name) movido."
+    Move-Item -Path $arquivo.FullName -Destination "C:\Users\adryelle.sousa\Documents\EstudoGitHub\Processados"
+    Write-Host "$($arquivo.Name) movido para a pasta de Processados."
 }
 
 # Contabiliza quantos arquivos foram processados, ignorados e o tempo de execução 
@@ -49,15 +49,15 @@ foreach ($Arquivo in $Arquivos) {
 }
 
 
-# função que cria o arquivo Relatorio_Processamento.cs e o arquivo log.txt
+# função que cria o arquivo Relatorio_Processamento.csv e o arquivo log.txt
 function CriaArquivo{
     param (
         [string]$NomeArquivo,
         [string]$PastaDestino,   
         [int]$Tamanho,
         [string]$Extensao,
-        [int]$QntArquivosProcessados,
-        [int]$QntArquivosIgnorados,
+        [int]$QntArquivosProcessados = 0,
+        [int]$QntArquivosIgnorados = 0,
         [single]$TempoTotalExecucao
     )
     Get-Command CriaArquiv**
@@ -82,13 +82,15 @@ Tempo de Execução: $TempoExecucao
 $Fim = Get-Date
 $TempoExecucao = ($Fim - $Inicio).TotalSeconds
 
-# Chamado das funções 
+# Chamado da funções que cria o arquivo q Relatorio_Processamento.csv
 
 CriaArquivo `
     -NomeArquivo "Relatorio_Processamento.csv" `
     -Extensao ".csv" `
     -PastaDestino "C:\Users\adryelle.sousa\Documents\EstudoGitHub\Relatorio" `
     -Tamanho "150"
+
+# Chamado da função que cria um arquivo log.txt
 
 CriaArquivo `
     -NomeArquivo "log.txt" `
@@ -99,4 +101,30 @@ CriaArquivo `
     -QntArquivosIgnorados $ArquivosIgnorados `
     -TempoTotalExecucao $TempoExecucao
 
-    
+#Backup de arquivos processados 
+
+$ArquivosProcessados = Get-ChildItem "C:\Users\adryelle.sousa\Documents\EstudoGitHub\Processados\*.csv"
+
+foreach ($Arquivo in $ArquivosProcessados) {
+
+    if ($Arquivo.Length -gt 0) {
+        $QntArquivosProcessados++
+    }
+    else {
+        $QntArquivosIgnorados++
+    }
+}
+
+$DataHora = Get-Date -Format "yyyy-MM-dd_HHmmss"
+$PastaBackup = "C:\Users\adryelle.sousa\Documents\EstudoGitHub\Backup\Backup_$DataHora"
+New-Item -Path $PastaBackup -ItemType Directory -Force
+
+foreach ($arquivo in $ArquivosProcessados) {
+    Copy-Item -Path $arquivo.FullName -Destination $PastaBackup
+}
+
+Write-Host "PROCESSAMENTO FINALIZADO"
+Write-Host "Arquivos processados: $QntArquivosProcessados"
+Write-Host "Arquivos Ignorados: $QntArquivosIgnorados"
+Write-Host "Tempo de execução: $TempoExecucao"
+Write-Host "Backup realizado com sucesso"
