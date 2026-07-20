@@ -50,3 +50,24 @@ Cria arquivo "Relatorio_Processamento.csv" contendo:
 - Tamanho
   
 - Pasta de destino
+
+Registra execução criando arquivo log.txt, contendo:
+-Data e Hora;
+
+- Quantidade de arquivos processados
+
+- Quantidade de arquivos ignorados
+
+- Tempo total de execução
+
+Realiza Backup:
+Copiar todos os arquivos processados para uma pasta de backup.
+O nome da pasta deverá segue o padrão: Backup_2026-07-05_143000
+
+### Como executar: 
+
+Abrir o PowerShell.
+
+Navegar até a pasta do projeto.
+
+Executar: .\ProcessarArquivos.ps1
