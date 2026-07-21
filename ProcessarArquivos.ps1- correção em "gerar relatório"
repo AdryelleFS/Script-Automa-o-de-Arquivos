@@ -1,0 +1,57 @@
+# Lista de pastas a serem verificadas
+$pastas = @(
+    "Processados",
+    "Backup",
+    "Logs",
+    "Relatorio"
+)
+
+foreach ($pasta in $pastas) {
+    if (Test-Path $pasta) {
+        Write-Host "A pasta '$pasta' existe."
+    }
+    else {
+        Write-Host "A pasta '$pasta' não existe."
+        foreach ($pasta in $pastas) {
+            New-Item -Path $pasta -ItemType Directory
+            Write-Host "Pasta '$pasta' criada com sucesso."
+        }
+    }
+}
+
+$arquivos = Get-ChildItem -Path "C:\Users\adryelle.sousa\Downloads\*.csv"
+
+foreach ($arquivo in $arquivos) { 
+
+    Move-Item -Path $arquivo.FullName -Destination "C:\Users\adryelle.sousa\Processados"
+    Write-Host "$($arquivo.Name) movido."
+}
+
+function CriaArquivo{
+    param (
+        [string]$NomeArquivo,
+        [string]$PastaDestino,   
+        [int]$Tamanho,
+        [string]$Extensao
+    )
+    Get-Command CriaArquiv**
+
+    $DataProcessamento = Get-Date -Format "dd/MM/yyyy HH:mm:ss"
+
+     $Conteudo = @"
+Nome do Arquivo: $NomeArquivo
+Extensão: $Extensao
+Data de Processamento: $DataProcessamento
+Tamanho: $Tamanho
+Pasta de Destino: $PastaDestino
+"@
+    $ArquivoRelatorio = Join-Path $PastaDestino "$NomeArquivo-Relatorio_Processamento"
+    Set-Content -Path $ArquivoRelatorio -Value $Conteudo
+    Write-Host "$NomeArquivo criado"
+}
+
+CriaArquivo `
+    -NomeArquivo "Relatorio_Processamento.csv" `
+    -Extensao ".csv" `
+    -PastaDestino "C:\Users\adryelle.sousa\Documents\EstudoGitHub\Relatorio" `
+    -Tamanho "150"
