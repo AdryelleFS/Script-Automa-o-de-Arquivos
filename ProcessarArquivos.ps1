@@ -55,16 +55,16 @@ function CriaArquivo{
         [string]$NomeArquivo,
         [string]$PastaDestino,   
         [int]$Tamanho,
-        [string]$Extensao,
         [int]$QntArquivosProcessados = 0,
         [int]$QntArquivosIgnorados = 0,
         [single]$TempoTotalExecucao
+        [string]$Extensao
     )
     Get-Command CriaArquiv**
 
     $DataProcessamento = Get-Date -Format "dd/MM/yyyy HH:mm:ss"
-
-     $Conteudo = @"
+    
+    $Conteudo = @"
 Nome do Arquivo: $NomeArquivo
 Extensão: $Extensao
 Data de Processamento: $DataProcessamento
